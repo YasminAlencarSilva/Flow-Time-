@@ -1,0 +1,1 @@
+Copie focus_end.wav para android/app/src/main/res/raw/focus_end.wav depois de executar npx cap add android.
