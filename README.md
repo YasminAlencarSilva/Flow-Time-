@@ -1,40 +1,53 @@
-# Pomodoro Focus ⏱️
+# Flowtime — Aplicativo de Foco e Produtividade
 
-Aplicativo desenvolvido para a atividade de Programação para Dispositivos Móveis II, utilizando React, Capacitor e o plugin `@capacitor/local-notifications`.
+Aplicativo mobile desenvolvido como atividade acadêmica da disciplina **Programação para Dispositivos Móveis II**, utilizando React, Vite, Capacitor e o plugin `@capacitor/local-notifications`.
+
+O Flowtime utiliza a técnica Pomodoro para demonstrar o gerenciamento de ciclos de foco e descanso, integrando funcionalidades nativas de notificações locais do Android.
 
 ## Objetivo
 
-Demonstrar notificações locais no Android: solicitação de permissão, disparo imediato, agendamento futuro, consulta/cancelamento de notificações pendentes e aviso sonoro ao fim de um ciclo Pomodoro.
+Implementar e demonstrar recursos de notificações locais em dispositivos Android, explorando a integração entre tecnologias web e funcionalidades nativas por meio do Capacitor.
 
-## Requisitos implementados
+## Funcionalidades Implementadas
 
-- [x] Verificar permissão com `checkPermissions()`.
-- [x] Solicitar permissão com `requestPermissions()` (Android 13+).
-- [x] Enviar notificação imediata.
-- [x] Agendar notificação futura.
-- [x] Ciclo de foco demonstrativo de 25 segundos.
-- [x] Alerta com título **Focus Pomodoro** e mensagem **Fim do ciclo de foco! Faça uma pausa de 5 minutos.**
-- [x] Consultar notificações pendentes com `getPending()`.
-- [x] Cancelar notificações com `cancel()`.
-- [x] Desafio extra: canal Android com som personalizado `focus_end.wav`.
-- [x] Workflow GitHub Actions para gerar APK a cada push em `main` ou `master`.
+- Verificação de permissões com `checkPermissions()`.
+- Solicitação de permissões com `requestPermissions()` (Android 13+).
+- Envio de notificações locais imediatas.
+- Agendamento de notificações futuras.
+- Temporizador de foco demonstrativo de 25 segundos.
+- Notificação automática ao término do ciclo de foco.
+- Alerta com orientação para pausa de 5 minutos.
+- Consulta de notificações pendentes com `getPending()`.
+- Cancelamento de notificações agendadas com `cancel()`.
+- Canal de notificações Android com som personalizado `focus_end.wav`.
+- Integração com GitHub Actions para geração automatizada de APK.
 
-## Tecnologias
+## Tecnologias Utilizadas
 
-- React + Vite
-- Capacitor 7
-- `@capacitor/local-notifications`
-- Lucide React
-- Android Studio / Gradle
-- GitHub Actions
+| Tecnologia | Aplicação |
+|---|---|
+| React | Desenvolvimento da interface |
+| Vite | Ambiente de desenvolvimento e build |
+| Capacitor 7 | Integração com recursos nativos |
+| Local Notifications | Gerenciamento de notificações |
+| Lucide React | Biblioteca de ícones |
+| Android Studio | Configuração e compilação Android |
+| Gradle | Automação de build |
+| GitHub Actions | Integração e automação de build |
 
 ## 1. Pré-requisitos
 
-Instale Node.js 22, Git e Android Studio. Para compilar localmente, configure o Android SDK pelo Android Studio.
+Antes de iniciar, certifique-se de possuir:
 
-## 2. Instalar dependências
+- Node.js 22.
+- Git.
+- Android Studio.
+- Android SDK configurado.
+- Java/JDK compatível com a configuração do Gradle.
 
-Na pasta do projeto, execute:
+## 2. Instalação das Dependências
+
+Na pasta raiz do projeto, execute:
 
 ```bash
 npm install
@@ -42,33 +55,45 @@ npm install @capacitor/local-notifications@latest-7
 npm install lucide-react
 ```
 
-## 3. Criar a plataforma Android
+## 3. Configuração da Plataforma Android
+
+Adicione a plataforma Android ao projeto:
 
 ```bash
 npx cap add android
 ```
 
-O projeto já inclui `capacitor.config.ts`, com o identificador `com.senai.pomodorofocus`.
+O projeto utiliza o identificador de aplicativo:
 
-## 4. Adicionar o som do desafio extra
+`com.senai.pomodorofocus`
 
-Depois de criar a pasta Android, copie o arquivo `assets/focus_end.wav` para:
+## 4. Configuração do Som Personalizado
+
+Para implementar o desafio extra de notificação sonora, copie o arquivo:
+
+`assets/focus_end.wav`
+
+Para o diretório:
 
 `android/app/src/main/res/raw/focus_end.wav`
 
-Se a pasta `raw` não existir, crie-a. O nome precisa ser exatamente `focus_end.wav`.
+Caso a pasta `raw` não exista, crie-a manualmente.
 
-No arquivo `android/app/src/main/AndroidManifest.xml`, dentro da tag `<manifest>` e antes de `<application>`, adicione também:
+No arquivo `android/app/src/main/AndroidManifest.xml`, adicione a seguinte permissão dentro da tag `<manifest>` e antes de `<application>`:
 
 ```xml
 <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 ```
 
-Essa permissão é relevante para alarmes agendados com precisão a partir do Android 12. O Android pode exigir que o usuário autorize alarmes e lembretes nas configurações do sistema.
+Essa permissão é relevante para o agendamento de alarmes exatos no Android 12 ou superior. A autorização pode precisar ser concedida pelo usuário nas configurações do sistema.
 
-O aplicativo cria o canal Android `pomodoro-focus` com esse arquivo como som. O Android mantém as configurações de um canal depois da primeira criação; se alterar o som durante os testes, desinstale o app do celular e instale novamente para recriar o canal.
+O aplicativo utiliza o canal Android `pomodoro-focus`, configurado com o som personalizado.
 
-## 5. Sincronizar e executar
+**Importante:** o Android mantém as configurações dos canais após sua criação. Caso o arquivo de áudio seja alterado durante os testes, desinstale e instale novamente o aplicativo para recriar o canal.
+
+## 5. Sincronização e Execução
+
+Gere a versão de produção e sincronize os recursos nativos:
 
 ```bash
 npm run build
@@ -76,74 +101,94 @@ npx cap sync android
 npx cap open android
 ```
 
-No Android Studio, aguarde a sincronização do Gradle, conecte o celular com depuração USB ativada e pressione **Run**.
+No Android Studio:
 
-Para abrir a versão web de visualização:
+1. Aguarde a sincronização do Gradle.
+2. Conecte um dispositivo Android com depuração USB ativada ou configure um emulador.
+3. Selecione o dispositivo.
+4. Clique em **Run** para executar o aplicativo.
+
+Para visualizar a interface pelo navegador:
 
 ```bash
 npm run dev
 ```
 
-> As notificações nativas e a permissão do sistema precisam ser testadas no aplicativo Android instalado. O navegador serve apenas para conferir a interface.
+As funcionalidades de notificações nativas devem ser testadas no aplicativo instalado no Android. O navegador é destinado apenas à visualização da interface.
 
-## 6. Testar a atividade
+## 6. Roteiro de Testes
 
-1. Abra o aplicativo no Android.
-2. Toque em **Verificar / permitir notificações** e aceite a permissão.
-3. Toque em **Enviar notificação agora** para testar o disparo imediato.
-4. Toque em **5s**, **10s** ou **15s** para testar um agendamento curto.
-5. Inicie o foco. O ciclo demonstrativo termina em 25 segundos.
-6. Minimize ou feche o aplicativo durante o teste: o sistema Android deve entregar a notificação agendada.
-7. Confira o aviso sonoro do canal **Fim do foco**.
-8. Consulte os alertas pendentes e teste **Cancelar todos**.
+1. Abra o Flowtime no dispositivo Android.
+2. Acesse a funcionalidade de verificação e solicitação de permissões.
+3. Autorize o envio de notificações.
+4. Utilize a opção de envio imediato para testar uma notificação.
+5. Teste os agendamentos de 5, 10 e 15 segundos.
+6. Inicie o temporizador de foco de 25 segundos.
+7. Minimize ou feche o aplicativo durante a contagem.
+8. Aguarde a notificação automática de conclusão do ciclo.
+9. Verifique a reprodução do som personalizado.
+10. Consulte as notificações pendentes e teste a funcionalidade de cancelamento.
 
-## 7. Gerar APK localmente
+## 7. Geração do APK Local
 
-Depois de sincronizar o Android:
+Após sincronizar a plataforma Android, execute na raiz do projeto:
 
-```bash
-cd android
-./gradlew assembleDebug
-```
-
-No Windows PowerShell:
+**Windows PowerShell:**
 
 ```powershell
 cd android
 .\gradlew.bat assembleDebug
 ```
 
-O APK será gerado em:
+**Linux / macOS:**
+
+```bash
+cd android
+./gradlew assembleDebug
+```
+
+Após a compilação, o APK estará disponível em:
 
 `android/app/build/outputs/apk/debug/app-debug.apk`
 
-## 8. Gerar APK pelo GitHub Actions
+## 8. Automação com GitHub Actions
+
+O projeto possui um workflow para automatizar a geração do APK por meio do GitHub Actions.
+
+Para utilizá-lo:
 
 1. Crie um repositório no GitHub.
-2. Envie todo o projeto, incluindo a pasta `android/` gerada por `npx cap add android`.
-3. Faça push para `main` ou `master`.
-4. Abra a aba **Actions** do GitHub.
-5. Entre no workflow **Build Android APK**.
-6. Quando terminar com sucesso, baixe o artefato `pomodoro-focus-app-debug`.
+2. Envie o código-fonte, incluindo a pasta `android/` gerada pelo Capacitor.
+3. Realize o push para a branch `main` ou `master`.
+4. Acesse a aba **Actions** do repositório.
+5. Selecione o workflow **Build Android APK**.
+6. Aguarde a conclusão da execução.
+7. Baixe o artefato `pomodoro-focus-app-debug` quando o processo finalizar com sucesso.
 
-## 9. O que colocar na entrega
+## 9. Materiais para Entrega
 
-- Código-fonte do projeto.
-- APK debug gerado.
-- Prints das telas principais.
-- GIF ou vídeo curto demonstrando a interface.
-- Gravação de tela do celular: permissão, notificação imediata e notificação após 25 segundos.
-- Este README com a apresentação e instruções.
+- Código-fonte completo.
+- APK de demonstração.
+- Capturas de tela das principais funcionalidades.
+- Vídeo ou gravação de tela demonstrando a execução no Android.
+- Demonstração da solicitação de permissões.
+- Testes de notificações imediatas e agendadas.
+- Demonstração do alerta sonoro personalizado.
 
-## Observações técnicas
+## Observações Técnicas
 
-- Android 13 (API 33) ou superior exige permissão de notificação em tempo de execução.
-- O som é configurado no canal nativo do Android. O usuário também pode silenciar o canal nas configurações do aparelho.
-- O cronômetro visual usa o relógio do sistema para calcular o tempo restante. A notificação é agendada nativamente, portanto não depende de manter a tela React aberta.
-- O tempo de 25 segundos é uma duração reduzida para demonstração da atividade. Em um Pomodoro convencional, o ciclo de foco costuma ser maior.
-- A entrega por GitHub Actions depende de o projeto Android ter sido criado e versionado no repositório.
+- Android 13 (API 33) ou superior exige autorização em tempo de execução para notificações.
+- O som das notificações é configurado por meio de um canal nativo do Android.
+- O usuário pode modificar ou desativar o som do canal nas configurações do dispositivo.
+- O temporizador visual utiliza o relógio do sistema para calcular o tempo restante.
+- As notificações são agendadas nativamente e não dependem da tela React permanecer aberta.
+- O ciclo de 25 segundos é utilizado exclusivamente para fins demonstrativos. A técnica Pomodoro tradicional utiliza períodos de foco mais longos.
+- A automação do GitHub Actions depende da configuração e do versionamento correto da plataforma Android no repositório.
 
 ## Referências
 
-- [Capacitor Local Notifications — documentação oficial](https://next.capacitorjs.com/docs/apis/local-notifications)
-- [Capacitor Android — documentação oficial](https://capacitorjs.com/docs/android)
+- [Capacitor Local Notifications — Documentação oficial](https://capacitorjs.com/docs/apis/local-notifications)
+- [Capacitor Android — Documentação oficial](https://capacitorjs.com/docs/android)
+- [React — Documentação oficial](https://react.dev/)
+- [Vite — Documentação oficial](https://vite.dev/)
+- [GitHub Actions — Documentação oficial](https://docs.github.com/en/actions)
